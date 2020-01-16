@@ -1,5 +1,10 @@
-login = input('Login: ')
-password = input('Password: ')
+def user_login():
+    login = input('Login: ')
+    password = input('Password: ')
+    return login, password
+
+
+login, password = user_login()
 
 try:
     users = open('Users.txt')
