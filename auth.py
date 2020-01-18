@@ -1,5 +1,7 @@
-login = input('Login: ')
-password = input('Password: ')
+def ask_credentials():
+    input_login = input('Login: ')
+    input_password = input('Password: ')
+    return input_login, input_password
 
 try:
     users = open('Users.txt')
