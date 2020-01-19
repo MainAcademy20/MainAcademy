@@ -1,3 +1,4 @@
+# files
 def reg ():
     login = input('Login: ')
     password = input('Password: ')
