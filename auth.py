@@ -1,5 +1,31 @@
-login = input('Login: ')
-password = input('Password: ')
+def reg ():
+    login = input('Login: ')
+    password = input('Password: ')
+    return login, password
+
+def check (lg,pw,stroka):
+    for stroka in content:
+        name, passw = stroka.split()
+        if lg == name and pw == passw:
+            return True
+            exit()
+        elif lg == name and pw != passw:
+            return False
+            exit()
+
+def get_key(line):
+    return line[0].lower()
+
+def sorting (spisok):
+    spisok.sort(key=get_key)
+    text = ''
+    for i, log in enumerate(spisok, start=1):
+        text += '{}. {}\n'.format(i, log)
+    return text
+
+s = reg()
+login = s[0]
+password = s[1]
 
 try:
     users = open('Users.txt')
@@ -16,32 +42,14 @@ for line in users:
         continue
     number, name, *passw = line.split()
     content.append('{} {}'.format(name, ' '.join(passw)))
-content.append('{} {}'.format(login, password))
+
+if not (check(login, password,line)):
+    content.append('{} {}'.format(login, password))
+
 users.close()
 
-####
-
-for line in content:
-    name, passw = line.split()
-    if login == name and passw == password:
-        print('OK')
-        exit()
-    elif login == name and passw != password:
-        print('Not OK')
-        exit()
-
-####
-
-def get_key(line):
-    return line[0].lower()
-
-content.sort(key=get_key)
-text = ''
-
-for i, login in enumerate(content, start=1):
-    text += '{}. {}\n'.format(i, login)
-
+ftext = sorting (content)
 
 users = open('Users.txt', 'w')
-users.write(text)
+users.write(ftext)
 users.close()
