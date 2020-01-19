@@ -7,11 +7,8 @@ def ask_credentials():
     return input_login, input_password
 
 
-login, password = ask_credentials()
-
-
-def read_credentials_from_file(file_name):
-    content = []
+def read_content_from_file(file_name):
+    file_content = []
     try:
         credentials = open(file_name)
     except (OSError, IOError):
@@ -21,48 +18,53 @@ def read_credentials_from_file(file_name):
         if not line:
             continue
         number, name, *passw = line.split()
-        content.append('{} {}'.format(name, ' '.join(passw)))
+        file_content.append('{} {}'.format(name, ' '.join(passw)))
     credentials.close()
-    return content
+    return file_content
 
 
-def add_user(content):
-    new_content = content
-    new_content.append('{} {}'.format(login, password))
-    return new_content
+def convert_array_to_string(input_content):
+    text = ''
+    for i, input_credentials in enumerate(input_content, start=1):
+        text += '{}. {}\n'.format(i, input_credentials)
+    return text
 
 
-print(read_credentials_from_file('Users.txt'))
+def check_access(input_content, input_login, input_password):
+    for line in input_content:
+        name, passw = line.split()
+        if input_login == name and passw == input_password:
+            print(input_content)
+            print('Access Granted')
+            exit()
+        elif input_login == name and passw != input_password:
+            print('Access Denied')
+            exit()
+        elif input_login != name:
+            register_new_user(content, login, password)
+            break
 
 
-def write_credentials_to_file():
-    write_to_file('Users.txt', text)
-    pass
-
-
-####
-
-for line in content:
-    name, passw = line.split()
-    if login == name and passw == password:
-        print('OK')
+def register_new_user(input_content, input_login, input_password):
+    new_content = input_content
+    print(new_content)
+    choice = input('Do you want to register?\n')
+    if choice:
+        if input_login != input_password:
+            new_content.append('{} {}'.format(input_login, input_password))
+        else:
+            print('A password must be different than your login')
+    else:
         exit()
-    elif login == name and passw != password:
-        print('Not OK')
-        exit()
+    new_content.sort(key=get_key)
+    write_to_file('Users.txt', convert_array_to_string(new_content))
 
-####
 
 def get_key(line):
     return line[0].lower()
 
-content.sort(key=get_key)
-text = ''
 
-for i, login in enumerate(content, start=1):
-    text += '{}. {}\n'.format(i, login)
+login, password = ask_credentials()
+content = read_content_from_file('Users.txt')
+check_access(content, login, password)
 
-
-users = open('Users.txt', 'w')
-users.write(text)
-users.close()
