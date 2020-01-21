@@ -6,6 +6,8 @@ def user_login():
 login, password = user_login()
 
 def user_update():
+    global login
+    global password
     try:
         users = open('Users.txt')
     except (OSError, IOError):
@@ -13,7 +15,6 @@ def user_update():
         users.write('1. Mark qwe123\n2. Ivan zxc123\n3. Oleg qwe123')
         users.close()
         users = open('Users.txt')
-
 
     content = []
     for line in users:
@@ -35,19 +36,19 @@ def user_update():
             print('Not OK')
             exit()
 
-user_update(user_login())
-####
+    user_update(user_login())
+    ####
 
-def get_key(line):
-    return line[0].lower()
+    def get_key(line):
+        return line[0].lower()
 
-content.sort(key=get_key)
-text = ''
+    content.sort(key=get_key)
+    text = ''
 
-for i, login in enumerate(content, start=1):
-    text += '{}. {}\n'.format(i, login)
+    for i, login in enumerate(content, start=1):
+        text += '{}. {}\n'.format(i, login)
 
 
-users = open('Users.txt', 'w')
-users.write(text)
-users.close()
+    users = open('Users.txt', 'w')
+    users.write(text)
+    users.close()
