@@ -58,6 +58,7 @@ def register_new_user(input_content, input_login, input_password):
     write_to_file('Users.txt', convert_array_to_string(new_content))
 
 
-login, password = ask_credentials()
-content = read_content_from_file('Users.txt')
-check_access(content, login, password)
+if __name__ == '__main__':
+    login, password = ask_credentials()
+    content = read_content_from_file('Users.txt')
+    check_access(content, login, password)
