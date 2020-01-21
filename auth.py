@@ -32,7 +32,8 @@ def convert_array_to_string(input_content):
 
 def check_access(input_content, input_login, input_password):
     for line in input_content:
-        name, passw = line.split()
+        name, *passw = line.split()
+        passw = ' '.join(passw)
         if input_login == name and passw == input_password:
             print(input_content)
             print('Access Granted')
