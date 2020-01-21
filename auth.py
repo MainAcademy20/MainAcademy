@@ -40,13 +40,11 @@ def check_access(input_content, input_login, input_password):
         elif input_login == name and passw != input_password:
             print('Access Denied')
             exit()
-        elif input_login != name:
-            register_new_user(content, login, password)
-            break
+    register_new_user(content, login, password)
 
 
 def register_new_user(input_content, input_login, input_password):
-    new_content = input_content
+    new_content = input_content.copy()
     print(new_content)
     choice = input('Do you want to register?\n')
     if choice:
@@ -56,15 +54,10 @@ def register_new_user(input_content, input_login, input_password):
             print('A password must be different than your login')
     else:
         exit()
-    new_content.sort(key=get_key)
+    new_content.sort(key=lambda line: line[0].lower())
     write_to_file('Users.txt', convert_array_to_string(new_content))
-
-
-def get_key(line):
-    return line[0].lower()
 
 
 login, password = ask_credentials()
 content = read_content_from_file('Users.txt')
 check_access(content, login, password)
-
