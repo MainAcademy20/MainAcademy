@@ -58,11 +58,9 @@ def format_text():
 
 
 def write_text():
-    users = open('Users.txt', 'w')
-    users.write(format_text())
-    users.close()
+    users_content = open('Users.txt', 'w')
+    users_content.write(format_text())
+    users_content.close()
 
 
-
-
-
+write_text()
