@@ -6,25 +6,27 @@ def user_login():
 
 login, password = user_login()
 
-try:
-    users = open('Users.txt')
-except (OSError, IOError):
-    users = open('Users.txt', 'w')
-    users.write('1. Mark qwe123\n2. Ivan zxc123\n3. Oleg qwe123')
-    users.close()
 
-with open('Users.txt', 'r+') as users:
-    users = users.readlines()
-content = []
+def read_write_file():
+    try:
+        users_content = open('Users.txt')
+    except (OSError, IOError):
+        users_content = open('Users.txt', 'w')
+        users_content.write('1. Mark qwe123\n2. Ivan zxc123\n3. Oleg qwe123')
+        users_content.close()
 
 
 def format_line():
-    for line in users:
+    lines = []
+    with open('Users.txt', 'r+') as user:
+        user = user.readlines()
+    for line in user:
         number, name, *passw = line.split()
-        content.append('{} {}'.format(name, ' '.join(passw)))
+        lines.append('{} {}'.format(name, ' '.join(passw)))
+    return lines
 
 
-format_line()
+content = format_line()
 
 
 def check_line():
@@ -34,9 +36,8 @@ def check_line():
             return print('ok')
         elif name == login and password != passw:
             return print('not ok')
-    if name != login:
-        content.append('{} {}'.format(login, password))
-        print('added')
+    content.append('{} {}'.format(login, password))
+    print('added')
 
 
 check_line()
@@ -47,12 +48,21 @@ def get_key(line):
 
 
 content.sort(key=get_key)
-text = ''
 
 
-for i, login in enumerate(content, start=1):
-    text += '{}. {}\n'.format(i, login)
+def format_text():
+    text = ''
+    for i, login in enumerate(content, start=1):
+        text += '{}. {}\n'.format(i, login)
+    return text
 
-users = open('Users.txt', 'w')
-users.write(text)
-users.close()
+
+def write_text():
+    users = open('Users.txt', 'w')
+    users.write(format_text())
+    users.close()
+
+
+
+
+
