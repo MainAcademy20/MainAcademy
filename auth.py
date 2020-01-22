@@ -1,5 +1,10 @@
-login = input('Login: ')
-password = input('Password: ')
+def user_login():
+    login = input('Login: ')
+    password = input('Password: ')
+    return login, password
+
+
+login, password = user_login()
 
 try:
     users = open('Users.txt')
@@ -11,13 +16,16 @@ except (OSError, IOError):
 
 
 content = []
-for line in users:
-    if not line:
-        continue
-    number, name, *passw = line.split()
-    content.append('{} {}'.format(name, ' '.join(passw)))
-content.append('{} {}'.format(login, password))
-users.close()
+def content_changed():
+    for line in users:
+        if not line:
+            continue
+        number, name, *passw = line.split()
+        content.append('{} {}'.format(name, ' '.join(passw)))
+    content.append('{} {}'.format(login, password))
+    users.close()
+    return content
+content = content_changed()
 
 ####
 
@@ -27,6 +35,9 @@ for line in content:
         print('OK')
         exit()
     elif login == name and passw != password:
+        print('Not OK')
+        exit()
+    else:
         print('Not OK')
         exit()
 
