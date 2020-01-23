@@ -12,14 +12,17 @@ def get_name_planet():
     return planet1_local, planet2_local
 
 
-def get_count_of_days_in_year(orbital_radius_local, orbital_speed_local):
-    planet_year = 2 * math.pi * orbital_radius_local / orbital_speed_local
-    planet_year = planet_year / (60 * 60 * 24)  # converting seconds to days
-    return planet_year
-
-
 def get_bigger_year(*args):
     return max(args) if args else 'Not enough parameters'
+
+
+def get_count_of_days_in_year(planet):
+    orbital_radius_local = convert_millions_of_kilometres_to_kilometres(planet)  # turning millions of kilometres to kilometres
+    orbital_speed_local = orbital_speed[planet]
+    planet_year = 2 * math.pi * orbital_radius_local / orbital_speed_local
+    planet_year = planet_year / (60 * 60 * 24)  # converting seconds to days
+    print("The year is {} days on {}".format(int(planet_year), planet))
+    return planet_year
 
 
 def convert_millions_of_kilometres_to_kilometres(planet):
@@ -30,17 +33,8 @@ if __name__ == '__main__':
     planet1, planet2 = get_name_planet()
 
     try:
-        orbital_radius_1 = convert_millions_of_kilometres_to_kilometres(planet1)  # turning millions of kilometres to kilometres
-        orbital_speed_1 = orbital_speed[planet1]
-
-        orbital_radius_2 = convert_millions_of_kilometres_to_kilometres(planet2)  # turning millions of kilometres to kilometres
-        orbital_speed_2 = orbital_speed[planet2]
-        planet_year1 = get_count_of_days_in_year(orbital_radius_1, orbital_speed_1)
-        planet_year2 = get_count_of_days_in_year(orbital_radius_2, orbital_speed_2)
-
-        print("The year is {} days on {}".format(int(planet_year1), planet1))
-        print("The year is {} days on {}".format(int(planet_year2), planet2))
-
+        planet_year1 = get_count_of_days_in_year(planet1)
+        planet_year2 = get_count_of_days_in_year(planet2)
         print("The {} year is bigger".format(get_bigger_year(planet_year1, planet_year2)))
     except KeyError:
         print('Wrong planet name was entered!')
