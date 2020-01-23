@@ -2,8 +2,8 @@
 def decorator(func):
     def wrapper(*args):
         print(*args)
+        func(*args)
         print(func(*args))
-        print('Bye')
     return wrapper
 
 
@@ -11,6 +11,7 @@ def decorator(func):
 def generate_recipe(*args):
     recipe_local, counter = '', 0
     exit_arr = []
+    print('We\'re inside the function')
     for arg in args:
         counter += 1
         exit_arr.append('{}. {}'.format(counter, arg))
