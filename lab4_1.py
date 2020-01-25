@@ -15,21 +15,19 @@ def year(planet):
     return planet_year
 
 
-def planet_input():
+def planet_input(n):
     while True:
         try:
-            planet = input("Planet: ")
+            planet = input("Input the Planet{}: ".format(n))
             planet_year = year(planet)
             break
         except KeyError:
-            print('Input the Planet')
+            print('it is not a Planet')
     return planet, planet_year
 
 
-print("Input Planet1")
-planet1, planet_year1 = planet_input()
-print("Input Planet2")
-planet2, planet_year2 = planet_input()
+planet1, planet_year1 = planet_input(1)
+planet2, planet_year2 = planet_input(2)
 
 print("The year is {} days on {}".format(int(planet_year1), planet1))
 print("The year is {} days on {}".format(int(planet_year2), planet2))
