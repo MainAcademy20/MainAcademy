@@ -1,4 +1,5 @@
 from app import app
+from flask import render_template
 
 
 @app.route('/')
@@ -9,6 +10,13 @@ def main():
 @app.route('/page1')
 def page1():
     return "Page 1 Content. (TODO: create link back to main page)"
+
+
+@app.route('/hello/<username>')
+def hello(username):
+    return render_template('hellouser.html', name=username)
+
+
 
 
 
