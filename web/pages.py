@@ -17,8 +17,5 @@ def hello(username):
     return render_template('hellouser.html', name=username)
 
 
-
-
-
 if __name__ == '__main__':
     app.run()
