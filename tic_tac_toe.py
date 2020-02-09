@@ -23,7 +23,6 @@ def take_index():
     while number not in range(9):
         try:
             number = int(input('\nChoose a number where to put: '))
-            os.system('clear')
         except ValueError:
             print('Wrong number!')
     return number
@@ -33,6 +32,9 @@ def make_changes(local_arr, index, local_char):
     """
     Function overrides existing array and returns it
     """
+    while local_arr[index] == 'X' or local_arr[index] == 'O':
+        print('This place is taken!')
+        index = take_index()
     local_arr[index] = local_char
     return local_arr
 
@@ -52,14 +54,13 @@ def check_win(local_arr):
         return False
 
 
-get_pretty_format(*arr)
 while True:
     for char in chars:
+        get_pretty_format(*arr)
         print('\nPlayer %s moves' % char)
         global_index = take_index()
-        os.system('clear')
         arr = make_changes(arr, global_index, char)
-        get_pretty_format(*arr)
         if check_win(arr):
-            print('\nYou won! Congratulations!!')
+            print('\nPlayer %s won! Congratulations!!\n' % char)
             exit()
+        os.system('clear')
