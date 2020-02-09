@@ -1,5 +1,5 @@
 import requests
-from time import gmtime , strftime
+from time import strftime
 from telegram.ext import Updater, MessageHandler, Filters
 
 
@@ -9,7 +9,7 @@ PRIVAT_EXCHANGE_API_URL = 'https://api.privatbank.ua/p24api/pubinfo?json&exchang
 
 def human_readable_ccy(ccy_obj):
 	# USD-UAH: 24.15000/24.55000
-	return "{}-{}: {}/{}".format(
+	return "{}-{}: {}-{}".format(
 		ccy_obj['ccy'], ccy_obj['base_ccy'], ccy_obj['buy'], ccy_obj['sale'])
 
 
