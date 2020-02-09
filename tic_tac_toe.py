@@ -54,6 +54,19 @@ def check_win(local_arr):
         return False
 
 
+def check_draw(local_arr):
+    return all(map(lambda x: type(x) == str, local_arr))
+
+
+def reload_game():
+    global arr
+    choose = input('Do you want to play again? choose "y" or "n": ')
+    if choose == 'y':
+        arr = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+    else:
+        exit()
+
+
 while True:
     for char in chars:
         get_pretty_format(*arr)
@@ -61,6 +74,13 @@ while True:
         global_index = take_index()
         arr = make_changes(arr, global_index, char)
         if check_win(arr):
+            os.system('clear')
+            get_pretty_format(*arr)
             print('\nPlayer %s won! Congratulations!!\n' % char)
-            exit()
+            reload_game()
+        if check_draw(arr) and not check_win(arr):
+            os.system('clear')
+            get_pretty_format(*arr)
+            print('\nDraw!')
+            reload_game()
         os.system('clear')
