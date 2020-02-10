@@ -12,9 +12,9 @@ PRIVAT_EXCHANGE_API_URL = 'https://api.privatbank.ua/p24api/pubinfo?json&exchang
 
 def human_readable_ccy(ccy_obj):
 	# USD-UAH: 24.15000/24.55000
-	localtime = str(datetime.datetime.now())
+	#localtime = str(datetime.datetime.now())
 	# localtime = time.asctime(time.localtime(time.time()))
-	return "{}-{}: {}/{}\n{}".format(ccy_obj['ccy'], ccy_obj['base_ccy'], ccy_obj['buy'], ccy_obj['sale'], localtime)
+	return "{}-{}: {}/{}".format(ccy_obj['ccy'], ccy_obj['base_ccy'], ccy_obj['buy'], ccy_obj['sale'])
 
 
 def echo(update, context):
@@ -22,9 +22,10 @@ def echo(update, context):
 	response = requests.get(PRIVAT_EXCHANGE_API_URL)
 	# [{"ccy":"USD","base_ccy":"UAH","buy":"24.15000","sale":"24.55000"}, ...]
 	list_ccy = response.json()
+	localtime = time.asctime(time.localtime(time.time()))
 	list_ccy_human = list(map(human_readable_ccy, list_ccy))
 
-	context.bot.send_message(msg.chat_id, '\n'.join(list_ccy_human))
+	context.bot.send_message(msg.chat_id, "\n".join(list_ccy_human) + "\n" + localtime)
 
 
 def main():
