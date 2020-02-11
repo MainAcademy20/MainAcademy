@@ -70,10 +70,7 @@ def ResetBoard():
 while True:
     Game(player)
     replay = input('Хотите сыграть еще раз? (y/n): ')
-    if replay == 'n' or replay == 'N':
-        break
-    elif replay == 'y' or replay == 'Y':
+    if replay == 'y' or replay == 'Y' :
         ResetBoard()
         continue
-    elif replay != 'y' or 'Y' or 'n' or 'N':
-        break
+    break
