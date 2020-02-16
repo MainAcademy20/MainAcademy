@@ -3,25 +3,26 @@ from model import XOState
 
 
 def get_new_game_status(xostate):
-    """TODO::убрать дублирующийся код"""
-    for i in range(3):
-        row = xostate.get_row(i)
-        if row[0] == row[1] == row[2] and row[0] != 0:
-            return row[0]
-    for i in range(3):
-        col = xostate.get_col(i)
-        if col[0] == col[1] == col[2] and col[0] != 0:
-            return col[0]
-    for i in range(2):
-        diag = xostate.get_diag(i)
-        if diag[0] == diag[1] == diag[2] and diag[0] != 0:
-            return diag[0]
+    """Done TODO::убрать дублирующийся код"""
+    row = find_winner(xostate.get_row, 3)
+    col = find_winner(xostate.get_col, 3)
+    diag = find_winner(xostate.get_diag, 2)
+    for winner in (row, col, diag):
+        if winner is not None:
+            return winner
     for i in range(3):
         row = xostate.get_row(i)
         for cell in row:
             if cell == 0:
                 return 0
     return 3
+
+
+def find_winner(func, number):
+    for i in range(number):
+        item_name = func(i)
+        if item_name[0] == item_name[1] == item_name[2] and item_name[0] != 0:
+            return item_name[0]
 
 
 def check_input(local_turn, state, keys):
@@ -38,9 +39,9 @@ def check_input(local_turn, state, keys):
 
 def game_loop():
     """
-         TODO::* добавить проверки на корректность ввода
-         TODO::* если ввод некорректен, повторить его не меняя игрока
-         TODO::** спросить, хотят ли игроки сыграть еще раз (правильно структурировать код)
+         Done TODO::* добавить проверки на корректность ввода
+         Done TODO::* если ввод некорректен, повторить его не меняя игрока
+         Done TODO::** спросить, хотят ли игроки сыграть еще раз (правильно структурировать код)
          TODO::*** переписать так чтобы можно было играть с компьютером + выбирать режим
 
     """
@@ -64,7 +65,9 @@ def game_loop():
         game_status = get_new_game_status(state)
     view.clear_screen()
     view.print_field(state)
-    view.print_gameover(game_status)
+    view.print_game_over(game_status)
+    if view.play_again(input('\nDo you want to play again? Type \'y\': ')):
+        game_loop()
 
 
 if __name__ == '__main__':

@@ -45,14 +45,22 @@ def show_error(error):
         print('\nThis place is taken!\nTry again:')
 
 
-def print_gameover(game_result):
+def print_game_over(game_result):
     if game_result == 1:
         print('x победил!')
     if game_result == 2:
         print('o победил!')
     if game_result == 3:
         print('ничья!')
-    input()
+
+
+def play_again(choose):
+    if choose == "y":
+        print('Lets play again!')
+        return True
+    else:
+        print('\n================Bye!================\n')
+        return False
 
 
 def clear_screen():
