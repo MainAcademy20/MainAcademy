@@ -32,10 +32,17 @@ def print_field(xostate):
 
 def get_input(xostate):
     if xostate.current_player == 1:
-        print('x > ', end='')
+        print('\nx > ', end='')
     if xostate.current_player == 2:
-        print('o > ', end='')
+        print('\no > ', end='')
     return input()
+
+
+def show_error(error):
+    if error == '1':
+        print('Wrong input!\nUse the following keys:\n\nq w e\na s d\nz x c')
+    if error == '2':
+        print('\nThis place is taken!\nTry again:')
 
 
 def print_gameover(game_result):
