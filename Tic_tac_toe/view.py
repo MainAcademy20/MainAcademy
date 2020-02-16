@@ -17,6 +17,13 @@ import os
 import sys
 
 
+def show_game_menu():
+    print('\nWelcome to the game!!!\n')
+    print('Press 1 to play single game or 2 to play against PC\n')
+    mode = input('What mode would you like to play?: ')
+    return mode
+
+
 def print_field(xostate):
     for i in range(3):
         row = xostate.get_row(i)
@@ -36,13 +43,6 @@ def get_input(xostate):
     if xostate.current_player == 2:
         print('\no > ', end='')
     return input()
-
-
-def show_game_menu():
-    print('\nWelcome to the game!!!\n')
-    print('Press 1 to play single game or 2 to play against PC\n')
-    mode = input('What mode would you like to play?: ')
-    return mode
 
 
 def show_error(error):
