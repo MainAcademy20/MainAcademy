@@ -1,5 +1,6 @@
 import view
 from model import XOState
+import random
 
 
 def get_new_game_status(xostate):
@@ -25,10 +26,33 @@ def find_winner(func, number):
             return item_name[0]
 
 
+def make_bot_turn(state, keys):
+    pool = [letter for letter in keys.keys() if state.field[keys[letter][0]][keys[letter][1]] not in [1, 2]]
+    bot_turn = random.randint(0, len(pool)-1)
+    return pool[bot_turn]
+
+
+def get_turn(state, mode, keys):
+    if mode == '1':
+        turn = view.get_input(state)
+        while not check_input(turn, state, keys):
+            turn = view.get_input(state)
+        return turn
+    if mode == '2':
+        if state.current_player == 1:
+            turn = view.get_input(state)
+            while not check_input(turn, state, keys):
+                turn = view.get_input(state)
+            return turn
+        if state.current_player == 2:
+            turn = make_bot_turn(state, keys)
+            return turn
+
+
 def check_input(local_turn, state, keys):
     view.clear_screen()
     view.print_field(state)
-    if local_turn not in ['q', 'w', 'e', 'a', 's', 'd', 'z', 'x', 'c']:
+    if local_turn not in keys.keys():
         view.show_error('1')
         return False
     if state.field[keys[local_turn][0]][keys[local_turn][1]] in [1, 2]:
@@ -42,7 +66,7 @@ def game_loop():
          Done TODO::* добавить проверки на корректность ввода
          Done TODO::* если ввод некорректен, повторить его не меняя игрока
          Done TODO::** спросить, хотят ли игроки сыграть еще раз (правильно структурировать код)
-         TODO::*** переписать так чтобы можно было играть с компьютером + выбирать режим
+         Done TODO::*** переписать так чтобы можно было играть с компьютером + выбирать режим
 
     """
     key_to_pos = {
@@ -53,12 +77,11 @@ def game_loop():
 
     state = XOState()
     game_status = 0
+    mode = view.show_game_menu()
     while game_status == 0:
         view.clear_screen()
         view.print_field(state)
-        turn = view.get_input(state)
-        while not check_input(turn, state, key_to_pos):
-            turn = view.get_input(state)
+        turn = get_turn(state, mode, key_to_pos)
         pos_row, pos_col = key_to_pos[turn]
         state.set_cell(pos_row, pos_col, state.current_player)
         state.switch_player()

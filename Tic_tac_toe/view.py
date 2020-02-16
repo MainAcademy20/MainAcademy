@@ -38,6 +38,13 @@ def get_input(xostate):
     return input()
 
 
+def show_game_menu():
+    print('\nWelcome to the game!!!\n')
+    print('Press 1 to play single game or 2 to play against PC\n')
+    mode = input('What mode would you like to play?: ')
+    return mode
+
+
 def show_error(error):
     if error == '1':
         print('Wrong input!\nUse the following keys:\n\nq w e\na s d\nz x c')
@@ -47,11 +54,11 @@ def show_error(error):
 
 def print_game_over(game_result):
     if game_result == 1:
-        print('x победил!')
+        print('\nx победил!')
     if game_result == 2:
-        print('o победил!')
+        print('\no победил!')
     if game_result == 3:
-        print('ничья!')
+        print('\nничья!')
 
 
 def play_again(choose):
