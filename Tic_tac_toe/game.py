@@ -1,10 +1,13 @@
 import view
 from model import XOState
 import random
+import time
 
 
 def get_new_game_status(xostate):
-    """Done TODO::убрать дублирующийся код"""
+    """Done TODO::убрать дублирующийся код
+    Function figures out what status of the game.
+    It returns a winner or 3(draw)"""
     row = find_winner(xostate.get_row, 3)
     col = find_winner(xostate.get_col, 3)
     diag = find_winner(xostate.get_diag, 2)
@@ -20,6 +23,8 @@ def get_new_game_status(xostate):
 
 
 def find_winner(func, number):
+    """The function looks for and it returns a winner. If winner isn't found - None.
+    Winner is a player who has row, column or diagonal which consists only of x or o"""
     for i in range(number):
         item_name = func(i)
         if item_name[0] == item_name[1] == item_name[2] and item_name[0] != 0:
@@ -27,12 +32,14 @@ def find_winner(func, number):
 
 
 def make_bot_turn(state, keys):
+    """Function checks free places and bot makes his turn using random"""
     pool = [letter for letter in keys.keys() if state.field[keys[letter][0]][keys[letter][1]] not in [1, 2]]
     bot_turn = random.randint(0, len(pool)-1)
     return pool[bot_turn]
 
 
 def get_turn(state, mode, keys):
+    """Depends on mode this function generates a turn (user's turn or bot's turn)"""
     if mode == '1':
         turn = view.get_input(state)
         while not check_input(turn, state, keys):
@@ -46,10 +53,13 @@ def get_turn(state, mode, keys):
             return turn
         if state.current_player == 2:
             turn = make_bot_turn(state, keys)
+            time.sleep(0.05)
             return turn
 
 
 def check_input(local_turn, state, keys):
+    """This function checks if wrong turn was entered or place is taken.
+    Return True if turn is correct"""
     view.clear_screen()
     view.print_field(state)
     if local_turn not in keys.keys():
