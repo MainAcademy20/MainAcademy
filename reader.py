@@ -9,11 +9,11 @@ class Main_Window(Qt.QMainWindow):
         self.setCentralWidget(self.tab)
 
         self.btnOpen = Qt.QPushButton('Open')
-        self.btnOpen.clicked.connect(self.open)
+        self.btnOpen.clicked.connect(self.open_file)
         self.statusBar().addWidget(self.btnOpen)
 
         self.btnClose = Qt.QPushButton('Close')
-        self.btnClose.clicked.connect(self.close)
+        self.btnClose.clicked.connect(self.close_file)
         self.statusBar().addWidget(self.btnClose)
 
     def open_file(self):
