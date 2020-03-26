@@ -46,4 +46,5 @@ for link in soup.find_all('item'):
         report_url_deep_detali_xml = bs4.BeautifulSoup(report_url_deep.content, 'xml')
         for link in report_url_deep_detali_xml.find_all('z:row'):
                 content = link.get('ZMIST')
-                print(content)
+                if content != None:
+                    print(content)
