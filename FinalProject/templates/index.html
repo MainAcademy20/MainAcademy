@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Uploads new Photo</title>
+</head>
+<body>
+    {% if args["method"] == "POST" %}
+        {% if args["file_size_error"] %}
+            <h1>File is over 1mb.!</h1>
+        {% else %}
+            <h2>Upload new Photo</h2>
+        {% endif %}
+    {% endif %}
+    <form action="/" method="POST" enctype="multipart/form-data">
+        <p>Upload your photo</p>
+        <input type="file" name="file" multiple accept="image/*,image/jpeg"><br><br>
+        <button type="submit">Upload</button>
+    </form>
+
+
+</body>
+</html>

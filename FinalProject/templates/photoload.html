@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> Photo Gallery</title>
+</head>
+<body>
+
+{% for item in spisok %}
+    <img src="static/{{item.name}}" width="300">
+    {% endfor %}
+
+
+</body>
+</html>
