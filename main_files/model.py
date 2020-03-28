@@ -22,4 +22,3 @@ def from_db():
     cur.execute('SELECT * FROM words')
     for i in cur:
         print(i)
-

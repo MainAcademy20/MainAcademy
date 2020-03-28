@@ -1,5 +1,5 @@
 from PyQt5 import QtWidgets, QtCore, QtGui
-from EnWordsRu import control
+from main_files import control
 
 
 class MainWindow(QtWidgets.QWidget):

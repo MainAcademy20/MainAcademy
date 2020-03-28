@@ -1,4 +1,4 @@
-from EnWordsRu import view, model
+from main_files import view, model
 
 
 def clicked_btn_wr():
