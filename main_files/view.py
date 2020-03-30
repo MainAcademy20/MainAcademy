@@ -1,5 +1,5 @@
 from PyQt5 import QtWidgets, QtCore, QtGui
-from main_files import control
+from main_files import control, model
 
 
 class MainWindow(QtWidgets.QWidget):
@@ -62,15 +62,30 @@ class RepeateWindow(QtWidgets.QWidget):
     def __init__(self, parent=None):
         QtWidgets.QWidget.__init__(self, parent)
         self.build()
+        self.signals()
 
     def build(self):
         self.repeate_win = QtWidgets.QWidget()
-        self.repeate_win.resize(600, 600)
+        self.repeate_win.resize(600, 300)
         self.repeate_win.setWindowTitle('EnWordsRu')
         self.repeate_win.setWindowFlags(QtCore.Qt.MSWindowsFixedSizeDialogHint)
         self.repeate_win.setWindowModality(QtCore.Qt.ApplicationModal)
         icon = QtGui.QIcon('Logo1.jpg')
         self.repeate_win.setWindowIcon(icon)
+        #model.func_random_words()
+        self.random_word = QtWidgets.QLabel()
+        self.user_enter = QtWidgets.QLineEdit()
+        self.btn_answer = QtWidgets.QPushButton('Send answer')
+        self.btn_start = QtWidgets.QPushButton('Start')
+        self.grid = QtWidgets.QGridLayout()
+        self.grid.addWidget(self.btn_start, 0, 0)
+        self.grid.addWidget(self.random_word, 1, 0, QtCore.Qt.AlignHCenter)
+        self.grid.addWidget(self.user_enter, 1, 1)
+        self.grid.addWidget(self.btn_answer, 2, 0, 1, 2)
+        self.repeate_win.setLayout(self.grid)
+
+    def signals(self):
+        self.btn_start.clicked.connect(control.click_btn_start)
 
 
 if __name__ == '__main__':

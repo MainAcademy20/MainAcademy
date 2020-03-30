@@ -21,3 +21,7 @@ def click_save_w():
     ru_word = view.MainWindow.open_second_win.ru_word.text()
     words = (en_word, ru_word)
     model.write_db(words)
+
+
+def click_btn_start():
+    view.MainWindow.open_second_win.random_word.setText(model.func_random_words())
