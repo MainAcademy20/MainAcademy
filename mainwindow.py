@@ -7,8 +7,6 @@ class Main_Window(QWidget):
 
     def __init__(self):
         super().__init__()
-
-    def mainwindow(self):
         self.topLay = QHBoxLayout(self)
         self.splitter = QSplitter(self)
         self.topLay.addWidget(self.splitter)
