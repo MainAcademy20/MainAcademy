@@ -12,9 +12,7 @@ class Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setMaximumSize(QtCore.QSize(1016, 813))
         self.centralwidget.setObjectName("centralwidget")
-        self.listView = QtWidgets.QListView(self.centralwidget)
-        self.listView.setGeometry(QtCore.QRect(290, 290, 821, 521))
-        self.listView.setObjectName("listView")
+
         self.lineEdit = QtWidgets.QLineEdit(self.centralwidget)
         self.lineEdit.setGeometry(QtCore.QRect(290, 70, 191, 21))
         self.lineEdit.setObjectName("lineEdit")
@@ -54,24 +52,42 @@ class Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
-
         self.pushButton_2.clicked.connect(self.open_file_path)
         self.model = QFileSystemModel()
         self.model.setRootPath(QDir.currentPath())
         self.treeView.setModel(self.model)
+        self.treeView.doubleClicked.connect(self.open_file_path)
+        self.textEdit = QtWidgets.QTextEdit(self.centralwidget)
+        self.textEdit.setGeometry(QtCore.QRect(290, 300, 701, 501))
+        self.textEdit.setObjectName("textEdit")
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def open_file_path(self, signal):
         file_path = self.model.filePath(self.treeView.currentIndex())
+        
         if not os.path.isfile(file_path):
             return
 
         with open(file_path) as f:
             txt = f.read()
+        idx = self.textEdit.addTab(Qt.QTextEdit(), file_path)
+        self.textEdit.widget(idx).setPlainText(txt)
+        self.textEdit.setCurrentIndex(idx)
 
-        # текст надо отобразить там где тебе надо
+    def retranslateUi(self, MainWindow):
+        _translate = QtCore.QCoreApplication.translate
+        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        self.pushButton.setText(_translate("MainWindow", "Сохранить"))
+        self.label.setText(_translate("MainWindow", "Фамилия"))
+        self.label_2.setText(_translate("MainWindow", "Имя"))
+        self.comboBox.setItemText(0, _translate("MainWindow", "Одобрен"))
+        self.comboBox.setItemText(1, _translate("MainWindow", "Откленен"))
+        self.comboBox.setItemText(2, _translate("MainWindow", "Принят на работу"))
+        self.pushButton_2.setText(_translate("MainWindow", "Импорт"))
+
+
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -93,4 +109,3 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
-
