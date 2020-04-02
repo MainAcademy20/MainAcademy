@@ -1,3 +1,5 @@
+import os
+
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
@@ -53,8 +55,23 @@ class Ui_MainWindow(object):
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
 
+        self.pushButton_2.clicked.connect(self.open_file_path)
+        self.model = QFileSystemModel()
+        self.model.setRootPath(QDir.currentPath())
+        self.treeView.setModel(self.model)
+
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+    def open_file_path(self, signal):
+        file_path = self.model.filePath(self.treeView.currentIndex())
+        if not os.path.isfile(file_path):
+            return
+
+        with open(file_path) as f:
+            txt = f.read()
+
+        # текст надо отобразить там где тебе надо
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -67,22 +84,6 @@ class Ui_MainWindow(object):
         self.comboBox.setItemText(2, _translate("MainWindow", "Принят на работу"))
         self.pushButton_2.setText(_translate("MainWindow", "Импорт"))
 
-
-class OPEN_FILES(QtWidgets):
-
-    def __init__(self):
-        super().__init__()
-        self.pushButton_2.clicked.connect(self.open_file_path)
-        self.model = QFileSystemModel(self)
-        self.model.setRootPath(QDir.currentPath())
-
-    def open_file_path(self, signal):
-        file_path = self.model.filePath(signal)
-        with open(file_path) as f:
-            txt = f.read()
-        idx = self.listView.addTab(Qt.QTextEdit(), file_path)
-        self.listView.widget(idx).setPlainText(txt)
-        self.listView.setCurrentIndex(idx)
 
 if __name__ == "__main__":
     import sys
