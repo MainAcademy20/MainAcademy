@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> Photo Gallery</title>
+</head>
+<body>
+<h2 style="text-align:center">Photogallery</h2>
+
+<form action="/fotodel">
+<div>
+
+{% for item in spisok %}
+<div style="float: left;">
+       <p>
+           <img src="/static/{{item.name}}" width="300"  title="foto">
+           <input name="del" type="radio" value="{{item.name}}">
+       </p>
+
+</div>
+    {% endfor %}
+
+</div>
+ <p><input type="submit"value="Delete file">  <button> <a style = "text-decoration: none" href = 'http://127.0.0.1:5000/'>Upload new file</astyle></button></p>
+</form>
+
+
+
+
+
+</body>
+</html>
