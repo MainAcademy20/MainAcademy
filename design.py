@@ -12,7 +12,7 @@ class Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setMaximumSize(QtCore.QSize(1016, 813))
         self.centralwidget.setObjectName("centralwidget")
-
+        self.db = db
         self.lineEdit = QtWidgets.QLineEdit(self.centralwidget)
         self.lineEdit.setGeometry(QtCore.QRect(290, 70, 191, 21))
         self.lineEdit.setObjectName("lineEdit")
@@ -44,6 +44,7 @@ class Ui_MainWindow(object):
         self.pushButton_2 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_2.setGeometry(QtCore.QRect(290, 10, 93, 28))
         self.pushButton_2.setObjectName("pushButton_2")
+        self.pushButton_2.clicked.connect(self.open_file_path)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1016, 26))
@@ -64,17 +65,18 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-    def open_file_path(self, signal):
+   def open_file_path(self):
         file_path = self.model.filePath(self.treeView.currentIndex())
-        
+
         if not os.path.isfile(file_path):
             return
 
         with open(file_path) as f:
             txt = f.read()
-        idx = self.textEdit.addTab(Qt.QTextEdit(), file_path)
-        self.textEdit.widget(idx).setPlainText(txt)
-        self.textEdit.setCurrentIndex(idx)
+            self.textEdit.setPlainText(txt)
+    
+    def records(self, last_name, first_name, status):
+        self.db.save_candidate(last_name, first_name, status)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -100,12 +102,27 @@ class Ui_MainWindow(object):
         self.comboBox.setItemText(2, _translate("MainWindow", "Принят на работу"))
         self.pushButton_2.setText(_translate("MainWindow", "Импорт"))
 
+class DATA_BASE:
+    def __init__(self):
+        self.conn = sqlite3.connect('candidates.db')
+        self.cand = self.conn.cursor()
+        self.cand.execute(
+            '''CREATE TABLE IF NOT EXISTS candidates (id integer primary key, last_name text, first_name text,
+             status text)'''
+        )
+        self.conn.commit()
+
+    def save_candidate(self, last_name, first_name, status):
+        self.cand.execute('''INSERT INTO candidates(candidate, status) VALUES (?, ?, 7)''',
+                          (last_name, first_name, status))
+        self.conn.commit()
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
+    db = DATA_BASE()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
