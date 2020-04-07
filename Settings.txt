@@ -1,0 +1,1 @@
+['air_temp_min', 0, 'air_temp_max', 0, 'water_temp_min', 0, 'water_temp_max', 0, 'ground_temp_min', 0, 'ground_temp_max', 0, 'LightOn', False, 'WaterOn', False]
