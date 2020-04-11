@@ -63,13 +63,12 @@ class Ui_MainWindow(object):
         self.model.setRootPath(QDir.currentPath())
         self.treeView.setModel(self.model)
         self.treeView.doubleClicked.connect(self.open_file_path)
+        self.pushButton.clicked.connect(self.candidates)
         self.textEdit = QtWidgets.QTextEdit(self.centralwidget)
         self.textEdit.setGeometry(QtCore.QRect(290, 300, 701, 501))
         self.textEdit.setObjectName("textEdit")
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
-        pushbutton2 = self.pushButton()
-        pushbutton2.clicked.connect(self.candidates)
 
 
 
