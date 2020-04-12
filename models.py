@@ -11,10 +11,11 @@ class BaseModel(Model):
         database = db
 
 
-class List(BaseModel):
-    name = CharField()
+class Candidates_list(BaseModel):
+    last_name = CharField()
+    first_name = CharField()
+    status = CharField()
 
-
-class Candidates(BaseModel):
-    list_ = ForeignKeyField(List, related_name='texts')
-    candidates_ = CharField()
+class Text(BaseModel):
+    list_ = ForeignKeyField(Candidates_list, related_name='candidates')
+    text = CharField()
