@@ -97,12 +97,25 @@ class Ui_MainWindow(object):
         last_names = self.label_2()
         first_names = self.lineEdit()
         statuses = self.comboBox()
-        candidate = last_names, first_names, statuses
-        candidate_value = candidate.text()
+        candidate_ln = last_names
+        candidate_value = candidate_ln.text()
         if not candidate_value:
             return
-        current_list = Candidates.get(name=candidate.currentText())
-        Candidates.create(text=candidate, list_=current_list)
+        current_list = Candidates_list.get(name=candidate_ln.currentText())
+        Candidates_list.create(text=candidate_ln, list_=current_list)
+        candidate_fn = first_names
+        candidate_value1 = candidate_fn.text()
+        if not candidate_value1:
+            return
+        current_list = Candidates_list.get(name=candidate_fn.currentText())
+        Candidates_list.create(text=candidate_fn, list_=current_list)
+        candidate_st = statuses
+        candidate_st_value = statuses.text()
+        if not candidate_st_value:
+            return
+        current_list = Candidates_list.get(name=candidate_st.currentText())
+        Candidates_list.create(text=candidate_st, list_=current_list)
+
 
 
 
