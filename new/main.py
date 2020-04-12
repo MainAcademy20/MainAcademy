@@ -13,6 +13,8 @@ app.run(debug=True)
 def create_item():
     return "OK"
 
+
+
 def insert_item():
     query = """
     INSERT INTO product

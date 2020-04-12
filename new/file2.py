@@ -2,6 +2,10 @@ import sqlite3
 
 conn = sqlite3.connect("shop.db")
 
+
+def create_user():
+
+
 def create_product():
     query = """
     CREATE TABLE product(
