@@ -9,9 +9,10 @@ stockmarket_API_url = 'https://stockmarket.gov.ua/api/v1/feed-index.xml'
 bot = Updater(bot_token, use_context=True)
 dp = bot.dispatcher
 
+
 def start(update, context: CallbackContext):
 	msg = update.message
-	context.bot.send_message(msg.chat_id, 'Пошук в базі НКЦПФР або новири комісії', markup=ReplyKeyboardMarkup(
+	context.bot.send_message(msg.chat_id, 'Пошук в базі НКЦПФР або новини комісії', reply_markup=ReplyKeyboardMarkup(
 		[
 			[KeyboardButton('Пошук в базі НКЦПФР')],
 			[KeyboardButton('Новини НКЦПФР')]
@@ -19,42 +20,71 @@ def start(update, context: CallbackContext):
 	))
 
 
-def user_search(update, context):
-	msg = update.message
-	if msg.text.isdigit() and len(msg.text) == 8:
-		return msg.text #context.bot.send_message(msg.chat_id, 'Ok....')
-	else:
-		return context.bot.send_message(msg.chat_id, 'Неправильний формат коду ЄДР. Спробуйте ще раз.')
-
 def first_results(update, context):
-	user_search(update, context)
+	context.bot.send_message(update.message.chat_id, 'Введіть код ЄДР для пошуку: ')
+
+
+
+def news(update, context):
 	msg = update.message
-	if msg.text == 'Пошук в базі НКЦПФР':
-		context.bot.send_message(msg.chat_id, 'Введіть код ЄДР для пошуку: ')
-	elif msg.text == 'Новини НКЦПФР':
-		context.bot.send_message(msg.chat_id, reply_markup=InlineKeyboardMarkup(
-			[
-				[InlineKeyboardButton('Перейти на сайт НКЦПФР', url='https://www.nssmc.gov.ua/category/news/')]
-			]
-		))
-def second_results():
-	payload = {'edrpou': user_search()}
+	context.bot.send_message(msg.chat_id, 'Новини', reply_markup=InlineKeyboardMarkup(
+		[
+			[InlineKeyboardButton('Перейти на сайт НКЦПФР', url='https://www.nssmc.gov.ua/category/news/')]
+		]
+	))
+
+
+def search(update, context):
+	msg = update.message
+	payload = {'edrpou': msg.text}
 	r = requests.get(stockmarket_API_url, params=payload)
 	soup = bs4.BeautifulSoup(r.text, 'xml')
 	params = soup.find_all('param')
-	for param in params:
-		if param.get('name') == 'D_NAME':
-			name = param.text
-			break
-	try:
-		context.bot.send_message(msg.chat_id, name)
-	except NameError:
-		context.bot.send_message(msg.chat_id, 'Запису не знайдено.')
+	if len(msg.text) == 8:
+		for param in params:
+			if param.get('name') == 'D_NAME':
+				name = param.text
+				break
+		try:
+			context.bot.send_message(msg.chat_id, name)
+			for link in soup.find_all('item'):
+				report_url = link.get('href')
+				timestamp = link.get('timestamp')
+
+
+				if report_url.endswith('.txt'):
+					context.bot.send_message(msg.chat_id, "Дата оприлюднення даних: ", timestamp[:10])
+					context.bot.send_message(msg.chat_id, "Пряме посилання: ", report_url)
+					context.bot.send_message(msg.chat_id, 'Текст звіту: ')
+					report_url_deep = requests.get(report_url)
+					report_url_deep_detali_txt = bs4.BeautifulSoup(report_url_deep.content, 'html.parser', )
+					context.bot.send_message(msg.chat_id, report_url_deep_detali_txt)
+
+				elif report_url.endswith('.xml'):
+					context.bot.send_message(msg.chat_id, "Дата оприлюднення даних: ", timestamp[:10])
+					context.bot.send_message(msg.chat_id, "Пряме посилання: ", report_url)
+					context.bot.send_message(msg.chat_id, 'Текст звіту: ')
+					report_url_deep = requests.get(report_url)
+					report_url_deep_detali_xml = bs4.BeautifulSoup(report_url_deep.content, 'xml')
+					for link in report_url_deep_detali_xml.find_all('z:row'):
+						content = link.get('ZMIST')
+						if content != None:
+							context.bot.send_message(msg.chat_id, content)
+
+
+		except NameError:
+			context.bot.send_message(msg.chat_id, 'Запису не знайдено.')
+
+	else:
+		context.bot.send_message(msg.chat_id, 'Неправильний формат коду ЄДР. Спробуйте ще раз.')
+
+
 
 def main():
 	dp.add_handler(CommandHandler('start', start))
-	dp.add_handler(MessageHandler(Filters.text, first_results))
-	dp.add_handler(MessageHandler(Filters.text, second_results))
+	dp.add_handler(MessageHandler(Filters.regex('Пошук в базі НКЦПФР'), first_results))
+	dp.add_handler(MessageHandler(Filters.regex('Новини НКЦПФР'), news))
+	dp.add_handler(MessageHandler(Filters.regex('\d+'), search))
 	bot.start_polling()
 
 if __name__ == '__main__':
