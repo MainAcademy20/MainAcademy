@@ -40,7 +40,7 @@ def search(update, context):
 	r = requests.get(stockmarket_API_url, params=payload)
 	soup = bs4.BeautifulSoup(r.text, 'xml')
 	params = soup.find_all('param')
-	if len(msg.text) == 8:
+	if len(msg.text) == 8 and msg.text.isdigit():
 		for param in params:
 			if param.get('name') == 'D_NAME':
 				name = param.text
@@ -71,7 +71,6 @@ def search(update, context):
 						if content != None:
 							context.bot.send_message(msg.chat_id, content)
 
-
 		except NameError:
 			context.bot.send_message(msg.chat_id, 'Запису не знайдено.')
 
@@ -80,11 +79,12 @@ def search(update, context):
 
 
 
+
 def main():
 	dp.add_handler(CommandHandler('start', start))
 	dp.add_handler(MessageHandler(Filters.regex('Пошук в базі НКЦПФР'), first_results))
 	dp.add_handler(MessageHandler(Filters.regex('Новини НКЦПФР'), news))
-	dp.add_handler(MessageHandler(Filters.regex('\d+'), search))
+	dp.add_handler(MessageHandler(Filters.text, search))
 	bot.start_polling()
 
 if __name__ == '__main__':
