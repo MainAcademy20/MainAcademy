@@ -24,8 +24,8 @@ class MainWindow(QtWidgets.QWidget):
         self.setLayout(self.grid)
 
     def signals(self):
-        self.btn_write.clicked.connect(control.clicked_btn_wr)
-        self.btn_repeate.clicked.connect(control.clicked_btn_re)
+        self.btn_write.clicked.connect(control.clicked_btn_wr_M)
+        self.btn_repeate.clicked.connect(control.clicked_btn_re_M)
 
 
 class WriteWindow(QtWidgets.QWidget):
@@ -46,16 +46,28 @@ class WriteWindow(QtWidgets.QWidget):
         self.en_word = QtWidgets.QLineEdit()
         self.ru_word = QtWidgets.QLineEdit()
         self.btn_save = QtWidgets.QPushButton('Save words')
-        self.btn_clean = QtWidgets.QPushButton('Clean words')
-        self.grid.addWidget(self.en_word, 0, 0)
-        self.grid.addWidget(self.ru_word, 0, 1)
-        self.grid.addWidget(self.btn_save, 1, 0)
-        self.grid.addWidget(self.btn_clean, 1, 1)
+        self.btn_delete = QtWidgets.QPushButton('Delete last word')
+        self.list_label = list()
+        for _ in range(10):
+            lbl = QtWidgets.QLabel()
+            self.list_label.append(lbl)
+        k = 0
+        for i in range(5):
+            self.grid.addWidget(self.list_label[i], k, 0, 1, 1,QtCore.Qt.AlignHCenter)
+            k += 1
+        m = 0
+        for i in range(5, 10):
+            self.grid.addWidget(self.list_label[i], m, 1, 1, 1,QtCore.Qt.AlignHCenter)
+            m += 1
+        self.grid.addWidget(self.en_word, 5, 0, 6, 1)
+        self.grid.addWidget(self.ru_word, 5, 1, 6, 1)
+        self.grid.addWidget(self.btn_save, 6, 0, 6, 1)
+        self.grid.addWidget(self.btn_delete, 6, 1, 6, 1)
         self.write_win.setLayout(self.grid)
 
     def signals(self):
-        self.btn_clean.clicked.connect(control.click_clean_w)
-        self.btn_save.clicked.connect(control.click_save_w)
+        self.btn_save.clicked.connect(control.click_save_W)
+        self.btn_delete.clicked.connect(control.click_btn_del_W)
 
 
 class RepeateWindow(QtWidgets.QWidget):
@@ -72,9 +84,9 @@ class RepeateWindow(QtWidgets.QWidget):
         self.repeate_win.setWindowModality(QtCore.Qt.ApplicationModal)
         icon = QtGui.QIcon('Logo1.jpg')
         self.repeate_win.setWindowIcon(icon)
-        #model.func_random_words()
         self.random_word = QtWidgets.QLabel()
         self.user_enter = QtWidgets.QLineEdit()
+        self.check_answer = QtWidgets.QLabel()
         self.btn_answer = QtWidgets.QPushButton('Send answer')
         self.btn_start = QtWidgets.QPushButton('Start')
         self.grid = QtWidgets.QGridLayout()
@@ -82,10 +94,12 @@ class RepeateWindow(QtWidgets.QWidget):
         self.grid.addWidget(self.random_word, 1, 0, QtCore.Qt.AlignHCenter)
         self.grid.addWidget(self.user_enter, 1, 1)
         self.grid.addWidget(self.btn_answer, 2, 0, 1, 2)
+        self.grid.addWidget(self.check_answer, 0, 3)
         self.repeate_win.setLayout(self.grid)
 
     def signals(self):
-        self.btn_start.clicked.connect(control.click_btn_start)
+        self.btn_start.clicked.connect(control.click_btn_start_R)
+        self.btn_answer.clicked.connect(control.click_btn_send_R)
 
 
 if __name__ == '__main__':
