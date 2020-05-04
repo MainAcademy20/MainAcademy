@@ -1,5 +1,5 @@
 from PyQt5 import QtWidgets, QtCore, QtGui
-from main_files import control, model
+from main_files import control
 
 
 class MainWindow(QtWidgets.QWidget):
@@ -14,13 +14,17 @@ class MainWindow(QtWidgets.QWidget):
         self.resize(500, 300)
         self.setWindowTitle('EnWordsRu')
         self.setWindowFlags(QtCore.Qt.MSWindowsFixedSizeDialogHint)
-        icon = QtGui.QIcon('Logo1.jpg')
+        icon = QtGui.QIcon('../main_files/images/Logo1.jpg')
         self.setWindowIcon(icon)
         self.btn_write = QtWidgets.QPushButton('Writing')
         self.btn_repeate = QtWidgets.QPushButton('Repeating')
+        wr_label = QtWidgets.QLabel('Режим записи выученых слов.\nНажмите чтобы перейти!')
+        rp_label = QtWidgets.QLabel('Режим повторения выученых слов.\nНажмите чтобы перейти!')
         self.grid = QtWidgets.QGridLayout()
-        self.grid.addWidget(self.btn_write, 0, 0, 2, 1)
-        self.grid.addWidget(self.btn_repeate, 2, 2, 2, 1)
+        self.grid.addWidget(wr_label, 1, 0, 3, 1)
+        self.grid.addWidget(rp_label, 1, 1, 3, 1)
+        self.grid.addWidget(self.btn_write, 0, 0, 3, 1)
+        self.grid.addWidget(self.btn_repeate, 2, 1, 3, 1)
         self.setLayout(self.grid)
 
     def signals(self):
@@ -40,7 +44,7 @@ class WriteWindow(QtWidgets.QWidget):
         self.write_win.setWindowTitle('EnWordsRu')
         self.write_win.setWindowFlags(QtCore.Qt.MSWindowsFixedSizeDialogHint)
         self.write_win.setWindowModality(QtCore.Qt.ApplicationModal)
-        icon = QtGui.QIcon('Logo1.jpg')
+        icon = QtGui.QIcon('../main_files/images/Logo1.jpg')
         self.write_win.setWindowIcon(icon)
         self.grid = QtWidgets.QGridLayout()
         self.en_word = QtWidgets.QLineEdit()
@@ -82,19 +86,21 @@ class RepeateWindow(QtWidgets.QWidget):
         self.repeate_win.setWindowTitle('EnWordsRu')
         self.repeate_win.setWindowFlags(QtCore.Qt.MSWindowsFixedSizeDialogHint)
         self.repeate_win.setWindowModality(QtCore.Qt.ApplicationModal)
-        icon = QtGui.QIcon('Logo1.jpg')
+        icon = QtGui.QIcon('../main_files/images/Logo1.jpg')
         self.repeate_win.setWindowIcon(icon)
         self.random_word = QtWidgets.QLabel()
         self.user_enter = QtWidgets.QLineEdit()
-        self.check_answer = QtWidgets.QLabel()
+        self.check_answer = QtWidgets.QLabel(' ')
+        self.save_word = QtWidgets.QLabel()
         self.btn_answer = QtWidgets.QPushButton('Send answer')
+        self.btn_answer.setDisabled(True)
         self.btn_start = QtWidgets.QPushButton('Start')
         self.grid = QtWidgets.QGridLayout()
-        self.grid.addWidget(self.btn_start, 0, 0)
-        self.grid.addWidget(self.random_word, 1, 0, QtCore.Qt.AlignHCenter)
-        self.grid.addWidget(self.user_enter, 1, 1)
-        self.grid.addWidget(self.btn_answer, 2, 0, 1, 2)
-        self.grid.addWidget(self.check_answer, 0, 3)
+        self.grid.addWidget(self.check_answer, 0, 1, 1, 1, QtCore.Qt.AlignHCenter)
+        self.grid.addWidget(self.random_word, 0, 0, 1, 1, QtCore.Qt.AlignHCenter)
+        self.grid.addWidget(self.btn_start, 2, 0, 2, 1)
+        self.grid.addWidget(self.user_enter, 1, 0, 2, 2)
+        self.grid.addWidget(self.btn_answer, 2, 1, 2, 1)
         self.repeate_win.setLayout(self.grid)
 
     def signals(self):

@@ -1,6 +1,7 @@
 from main_files import control, view
 import sqlite3
 import random
+from PyQt5 import QtGui
 
 
 def write_db(couple_of_words:tuple):
@@ -34,26 +35,22 @@ def delete_word():
 def func_random_words():
     con = sqlite3.connect('words.db')
     cur = con.cursor()
-    cur.execute('SELECT id_word FROM words')
-    id_word = list()
-    for i in cur:
-        g = i[0]
-        id_word.append(g)
-    id_randoms = random.choice(id_word)
+    sql = "SELECT eng_word, rus_word FROM words ORDER BY RANDOM() LIMIT 1"
     try:
-        con = sqlite3.connect('words.db')
-        cur = con.cursor()
-        cur.execute('SELECT eng_word FROM '
-                    'words WHERE id_word = {}'.format(id_randoms))
-    except sqlite3.DatabaseError as err:
-        print("Error", err)
-    else:
+        cur.execute(sql)
+        rand_words = []
         for i in cur:
-            return i[0]
+            rand_words.append(i)
+    except sqlite3.DatabaseError as err:
+        print('Error:', err)
+    else:
+        return rand_words
+    cur.close()
+    con.close()
 
 
 def check_correct_answer():
-    eng_word, rus_word = control.check_user_enter()
+    rus_word, eng_word = control.check_user_enter()
     con = sqlite3.connect('words.db')
     cur = con.cursor()
     try:
@@ -64,8 +61,8 @@ def check_correct_answer():
                 return '+'
     except sqlite3.DatabaseError as err:
         print('Error', err)
-    else:
-        print('Success')
+    cur.close()
+    con.close()
 
 
 def label_words():
@@ -93,9 +90,11 @@ def add_txt_to_label():
     list_words = label_words()
     k = 4
     for i in range(5):
-        view.MainWindow.open_second_win.list_label[i].setText(list_words[k])
+        view.MainWindow.open_second_win.list_label[i].setText('<h4>{}</h4>'.format(list_words[k]))
         k -= 1
     m = 9
     for i in range(5, 10):
-        view.MainWindow.open_second_win.list_label[i].setText(list_words[m])
+        view.MainWindow.open_second_win.list_label[i].setText('<h4>{}</h4>'.format(list_words[m]))
         m -= 1
+
+
