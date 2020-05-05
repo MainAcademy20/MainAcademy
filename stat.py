@@ -7,7 +7,7 @@ import os
 import time
 
 
-url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRs4Zx6MEwZBlwtvAianab1bp-uuR8TWHaraiVRYMut-prLSIa9SJQkZwth9D3aIt_KkXoRKQ203iPM/pub?output=xlsx"
+url = "https://docs.google.com/spreadsheets/d/e/key/pub?output=xlsx"
 datafeed = urllib.request.urlopen(url).read()
 filename = 'datafeeds' + datetime.datetime.now().strftime('%Y-%m-%d') + '.xlsx'
 f = open(filename, "wb")
